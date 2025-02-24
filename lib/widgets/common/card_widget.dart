@@ -22,6 +22,14 @@ class CardWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(32),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Column(
         children: [

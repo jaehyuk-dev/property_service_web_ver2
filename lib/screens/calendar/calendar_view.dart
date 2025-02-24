@@ -60,24 +60,11 @@ class _CalendarViewState extends State<CalendarView> {
 
   Future<void> _fetchEvents() async {
     try {   // todo 한달 내 일정 조회 api 개발 및 연결
-      // List<CalendarEvent> events = await _calendarService.fetchEvents("2025-02");
-      // Map<DateTime, List<String>> eventMap = {
-      //   for (var e in events) e.date: e.types
-      // };
+      loadingState.setLoading(true);
 
-      // 더미 데이터 생성
-      List<CalendarEvent> dummyEvents = [
-        CalendarEvent(date: DateTime(2025, 2, 2), types: ["입주"]),
-        CalendarEvent(date: DateTime(2025, 2, 9), types: ["계약"]),
-        CalendarEvent(date: DateTime(2025, 2, 11), types: ["상담", "입주"]),
-        CalendarEvent(date: DateTime(2025, 2, 16), types: ["상담"]),
-        CalendarEvent(date: DateTime(2025, 2, 17), types: ["입주"]),
-        CalendarEvent(date: DateTime(2025, 2, 24), types: ["계약", "상담", "입주"]),
-      ];
-
-      // 날짜를 UTC 형식으로 변환 후 저장
+      List<CalendarEvent> events = await _calendarService.fetchEvents(FormatUtils.formatToYYYYmm_forAPI(_focusedDay));
       Map<DateTime, List<String>> eventMap = {
-        for (var e in dummyEvents) normalizeDate(e.date): e.types
+        for (var e in events) normalizeDate(e.date): e.types
       };
 
       setState(() {
@@ -86,6 +73,8 @@ class _CalendarViewState extends State<CalendarView> {
 
     } catch (e) {
       print("Failed to fetch events: $e");
+    } finally {
+      loadingState.setLoading(false);
     }
   }
 
@@ -124,119 +113,157 @@ class _CalendarViewState extends State<CalendarView> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: 720,
-          height: 600,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: TableCalendar(
-            locale: "ko_KR",
-            firstDay: DateTime.utc(1900, 1, 1),
-            lastDay: DateTime.utc(2100, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: CalendarFormat.month,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-                _focusedDay = focusedDay;
-              });
-              _searchSelectedDateSchedule(); // ✅ 선택된 날짜 변경 시 일정 검색
-            },
-            availableGestures: AvailableGestures.none,
-
-            // eventLoader: _getEventsForDay,
-            headerStyle: HeaderStyle(
-              titleCentered: true,
-              formatButtonVisible: false,
-              headerMargin: EdgeInsets.symmetric(vertical: 8),
-            ),
-
-            daysOfWeekHeight: 60,
-            rowHeight: 80,
-
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-              weekendStyle: TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            calendarStyle: CalendarStyle(
-              defaultTextStyle: TextStyle(
-                fontSize: 14,  // 날짜 숫자 크기 키우기
-              ),
-              weekendTextStyle: TextStyle(
-                fontSize: 14,  // 주말 날짜 크기 키우기
-              ),
-              outsideTextStyle: TextStyle(
-                fontSize: 14,  // 달력 밖(이전/다음 달) 날짜 크기
-                color: Colors.grey, // 흐린 색상으로 표시
-              ),
-
-              selectedDecoration: BoxDecoration(
-                color: Color(0xFFE5E7EB),
-                // borderRadius: BorderRadius.circular(10),
-                shape: BoxShape.circle,
-              ),
-              selectedTextStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-              todayDecoration: BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-              ),
-              todayTextStyle: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-
-
-            calendarBuilders: CalendarBuilders(
-              markerBuilder: (context, date, events) {
-                List<String>? eventTypes = _events[date] ?? [];
-                if (eventTypes.isNotEmpty) {
-                  Map<String, Color> typeColors = {
-                    "상담": Color(0xFF22C55E),
-                    "계약": Color(0xFFEF4444),
-                    "입주": Color(0xFF3B82F6),
-                  };
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(height: 32), // 날짜와 막대 사이 간격 조정
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: eventTypes.map((type) {
-                          return Container(
-                            width: 18, // 막대 길이
-                            height: 4, // 막대 두께
-                            margin: EdgeInsets.symmetric(horizontal: 2),
-                            color: typeColors[type] ?? Colors.grey,
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  );
-                }
-                return null;
-              },
-            ),
-          ),
-        ),
-        SizedBox(width: 32),
         Column(
           children: [
+            Container(
+              width: 720,
+              height: 648,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(32),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: TableCalendar(
+                locale: "ko_KR",
+                firstDay: DateTime.utc(1900, 1, 1),
+                lastDay: DateTime.utc(2100, 12, 31),
+                focusedDay: _focusedDay,
+                calendarFormat: CalendarFormat.month,
+                selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                  });
+                  _searchSelectedDateSchedule(); // ✅ 선택된 날짜 변경 시 일정 검색
+                },
+                onPageChanged: (focusedDay) {
+                  setState(() {
+                    _focusedDay = focusedDay; // ✅ 새로운 달로 이동했을 때 focusedDay 업데이트
+                  });
+                  _fetchEvents(); // ✅ 현재 보고 있는 달이 변경되면 일정 다시 조회
+                },
+                availableGestures: AvailableGestures.none,
+
+                // eventLoader: _getEventsForDay,
+                headerStyle: HeaderStyle(
+                  titleCentered: true,
+                  formatButtonVisible: false,
+                  headerMargin: EdgeInsets.symmetric(vertical: 8),
+                  titleTextStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                  leftChevronIcon: Icon(
+                      Icons.chevron_left,
+                    size: 36,
+                  ),
+                  rightChevronIcon: Icon(
+                      Icons.chevron_right,
+                    size: 36,
+                  )
+                ),
+
+                daysOfWeekHeight: 60,
+                rowHeight: 80,
+
+                daysOfWeekStyle: DaysOfWeekStyle(
+                  weekdayStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                  weekendStyle: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                calendarStyle: CalendarStyle(
+                  defaultTextStyle: TextStyle(
+                    fontSize: 14,  // 날짜 숫자 크기 키우기
+                  ),
+                  weekendTextStyle: TextStyle(
+                    fontSize: 14,  // 주말 날짜 크기 키우기
+                  ),
+                  outsideTextStyle: TextStyle(
+                    fontSize: 14,  // 달력 밖(이전/다음 달) 날짜 크기
+                    color: Colors.grey, // 흐린 색상으로 표시
+                  ),
+
+                  selectedDecoration: BoxDecoration(
+                    color: Color(0xFFE5E7EB),
+                    // borderRadius: BorderRadius.circular(10),
+                    shape: BoxShape.circle,
+                  ),
+                  selectedTextStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.circle,
+                  ),
+                  todayTextStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+
+
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, date, events) {
+                    List<String>? eventTypes = _events[date] ?? [];
+                    if (eventTypes.isNotEmpty) {
+                      Map<String, Color> typeColors = {
+                        "상담": Color(0xFF22C55E),
+                        "계약": Color(0xFFEF4444),
+                        "입주": Color(0xFF3B82F6),
+                      };
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(height: 32), // 날짜와 막대 사이 간격 조정
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: eventTypes.map((type) {
+                              return Container(
+                                width: 18, // 막대 길이
+                                height: 4, // 막대 두께
+                                margin: EdgeInsets.symmetric(horizontal: 2),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: typeColors[type] ?? Colors.grey,
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             Container(
               width: 720,
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(32),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -252,21 +279,21 @@ class _CalendarViewState extends State<CalendarView> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
-            CardWidget(
-              width: 720,
-              title:  "${_selectedDay.year.toString()}년 ${_selectedDay.month}월 ${_selectedDay.day}일 일정",
-                child: SizedBox(
-                  height: 400,
-                  child: ListView.builder(
-                    itemCount: _selectedDateScheduleList.length,
-                    itemBuilder: (context, index) {
-                      return _buildScheduleItem(_selectedDateScheduleList[index]);
-                    },
-                  ),
-                )
-            )
           ],
+        ),
+        SizedBox(width: 32),
+        CardWidget(
+          width: 720,
+          title:  "${_selectedDay.year.toString()}년 ${_selectedDay.month}월 ${_selectedDay.day}일 일정",
+            child: SizedBox(
+              height: 604,
+              child: ListView.builder(
+                itemCount: _selectedDateScheduleList.length,
+                itemBuilder: (context, index) {
+                  return _buildScheduleItem(_selectedDateScheduleList[index]);
+                },
+              ),
+            )
         ),
       ],
     );

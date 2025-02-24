@@ -20,10 +20,8 @@ class CalendarEvent {
       'types': types,
     };
   }
-}
-
-// API에서 가져온 리스트를 모델 리스트로 변환하는 함수
-List<CalendarEvent> parseCalendarEvents(String responseBody) {
-  final parsed = json.decode(responseBody)['events'] as List;
-  return parsed.map((json) => CalendarEvent.fromJson(json)).toList();
+  // API에서 가져온 리스트를 모델 리스트로 변환하는 함수
+  static List<CalendarEvent> fromJsonList(List<dynamic> jsonList) {
+    return jsonList.map((json) => CalendarEvent.fromJson(json)).toList();
+  }
 }

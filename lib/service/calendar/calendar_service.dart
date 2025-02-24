@@ -9,14 +9,20 @@ class CalendarService {
   final ApiUtils _api = ApiUtils();
 
   // 월별 일정 데이터 가져오기
-  Future<List<CalendarEvent>> fetchEvents(String month) async {
+  Future<List<CalendarEvent>> fetchEvents(String yearMonth) async {
     try {
-      final response = await _api.get("/calendar/events", params: {"month": month});
+      final response = await _api.get("/schedule/event", params: {"yearMonth": yearMonth});
 
       if (response.statusCode == 200) {
-        return parseCalendarEvents(response.data.toString());
+        final responseData = response.data; // 전체 응답
+        if (responseData is Map<String, dynamic> && responseData.containsKey('data')) {
+          List<dynamic> data = responseData['data']; // data 키에서 리스트만 가져옴
+          return CalendarEvent.fromJsonList(data);
+        } else {
+          throw Exception("Invalid response format");
+        }
       } else {
-        throw Exception("Failed to load events");
+        throw Exception("Failed to load schedules");
       }
     } catch (e) {
       throw Exception("Error fetching calendar events: $e");

@@ -178,8 +178,8 @@ class MainViewState extends State<MainView> {
                           Container(
                             width: size.width - 240,
                             height: size.height - 64,
-                            color: Color(0xFFF9fAFB).withAlpha(216),
-                            // color: Colors.transparent,
+                            // color: Color(0xFFF9fAFB).withAlpha(216),
+                            color: Colors.transparent,
                             child: activeScreen.screen,
                           ),
                         ],
