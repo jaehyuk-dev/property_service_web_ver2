@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:property_service_web_ver2/core/utils/dialog_utils.dart';
+import 'package:property_service_web_ver2/screens/main/main_view.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../repository/auth/auth_repository.dart';
@@ -33,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
     if (success) {
       // 로그인 성공 시 홈 화면으로 이동
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/main',);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainView()));
       }
     } else {
       // 로그인 실패 시 알림 표시

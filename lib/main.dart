@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:html' as html;
+import 'package:provider/provider.dart';
 
 import 'package:property_service_web_ver2/screens/auth/login_view.dart';
 import 'package:property_service_web_ver2/screens/auth/mobile_view.dart';
-import 'package:property_service_web_ver2/screens/main/main_view.dart';
+import 'package:property_service_web_ver2/widgets/common/rotating_house_indicator.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoadingState()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,11 +39,6 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      initialRoute: "/",
-      routes: {
-        '/': (context) => isMobileBrowser() ? MobileView() : LoginView(),
-        '/main': (context) => MainView(),
-      },
       supportedLocales: [
         const Locale('ko', 'KR'), // 한국어 지원
       ],
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
         //   bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         // ),
       ),
+      home: isMobileBrowser() ? MobileView() : LoginView(),
     );
   }
 }
