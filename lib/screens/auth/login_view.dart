@@ -4,7 +4,6 @@ import 'package:property_service_web_ver2/core/utils/dialog_utils.dart';
 import 'package:property_service_web_ver2/screens/main/main_view.dart';
 
 import '../../core/constants/app_colors.dart';
-import '../../repository/auth/auth_repository.dart';
 import '../../widgets/common/rotating_house_indicator.dart';
 
 class LoginView extends StatefulWidget {
@@ -15,8 +14,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final AuthRepository _authRepository = AuthRepository();
-
   bool _isLoading = false;
   bool _autoLogin = false;
 
@@ -27,11 +24,9 @@ class _LoginViewState extends State<LoginView> {
   Future<void> signIn() async {
     setState(() => _isLoading = true);
 
-    bool success = await _authRepository.signIn(_email.text, _password.text);
-
     setState(() => _isLoading = false);
 
-    if (success) {
+    if (true) {
       // 로그인 성공 시 홈 화면으로 이동
       if (mounted) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MainView()));
@@ -50,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
 
   // 자동 로그인 체크
   Future<void> _checkAutoLogin() async {
-    bool isLoggedIn = await _authRepository.checkAutoLogin();
+    bool isLoggedIn = true;
     if (isLoggedIn && mounted) {
       Navigator.pushReplacementNamed(context, '/home');
     }
