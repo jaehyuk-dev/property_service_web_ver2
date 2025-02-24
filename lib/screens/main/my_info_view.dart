@@ -63,87 +63,79 @@ class _MyInfoViewState extends State<MyInfoView> {
   
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            CardWidget(
-              width: 480,
-              title: "기본 정보",
-              onTap: onUpdateMyInfo,
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return CardWidget(
+      width: 480,
+      title: "기본 정보",
+      onTap: onUpdateMyInfo,
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "이름",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF374151),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Text(
+                  "홍길동",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF111827),
+                  ),
+                ),
+              ),
+              SizedBox(height: 24),
+              Text(
+                "이메일",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF374151),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Text(
+                  "example@email.com",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF111827),
+                  ),
+                ),
+              ),
+              SizedBox(height: 24),
+              InkWell(
+                onTap: onChangeMyPassword,
+                child: Container(
+                  height: 48,
+                  width: 480 - 72,
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF3F4F6),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "이름",
+                        "비밀번호 변경",
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF374151),
+                          fontSize: 16,
+                          color: const Color(0xFF374151),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        child: Text(
-                          "홍길동",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF111827),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 24),
-                      Text(
-                        "이메일",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF374151),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        child: Text(
-                          "example@email.com",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF111827),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 24),
-                      InkWell(
-                        onTap: onChangeMyPassword,
-                        child: Container(
-                          height: 48,
-                          width: 480 - 72,
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF3F4F6),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "비밀번호 변경",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: const Color(0xFF374151),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
                     ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
