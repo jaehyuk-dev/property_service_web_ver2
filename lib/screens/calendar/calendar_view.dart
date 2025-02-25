@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/foramt_utils.dart';
 import '../../model/calendar/calendar_event_model.dart';
-import '../../service/calendar/calendar_service.dart';
+import '../../service/calendar_service.dart';
 import '../../widgets/common/rotating_house_indicator.dart';
 
 class Calendar extends StatefulWidget {
@@ -59,7 +59,7 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Future<void> _fetchEvents() async {
-    try {   // todo 한달 내 일정 조회 api 개발 및 연결
+    try {
       loadingState.setLoading(true);
 
       List<CalendarEvent> events = await _calendarService.fetchEvents(FormatUtils.formatToYYYYmm_forAPI(_focusedDay));

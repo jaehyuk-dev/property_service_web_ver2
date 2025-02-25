@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:property_service_web_ver2/core/enums/screen_type.dart';
+import 'package:property_service_web_ver2/widgets/button/custom_button.dart';
 
 class SubLayout extends StatelessWidget {
   final ScreenType screenType;
   final Widget child;
+  final String? buttonText;
+  final VoidCallback? onTap;
 
   SubLayout({
     super.key,
     required this.screenType,
     required this.child,
+    this.buttonText,
+    this.onTap,
   });
 
   final ScrollController verticalScrollController = ScrollController();
@@ -16,7 +21,6 @@ class SubLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -27,10 +31,11 @@ class SubLayout extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 44, vertical: 44),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       screenType.name,
@@ -40,10 +45,17 @@ class SubLayout extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 32),
-                    child,
+                    if(buttonText != null && onTap != null)
+                      Row(
+                        children: [
+                          SizedBox(width: 1280),
+                          CustomButton(text: buttonText!, onTap: onTap!),
+                        ],
+                      )
                   ],
                 ),
+                SizedBox(height: 32),
+                child,
               ],
             ),
           ),
