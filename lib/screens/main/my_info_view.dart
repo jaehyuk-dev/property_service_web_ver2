@@ -66,7 +66,7 @@ class _MyInfoViewState extends State<MyInfoView> {
     return CardWidget(
       width: 480,
       title: "기본 정보",
-      onTap: onUpdateMyInfo,
+      onEditTap: onUpdateMyInfo,
       child: Row(
         children: [
           Column(

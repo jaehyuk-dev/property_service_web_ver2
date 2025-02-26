@@ -70,4 +70,20 @@ class CalendarService {
       print("🚨 API 호출 중 오류 발생: $e");
     }
   }
+
+  // 일정 삭제 api
+  Future<void> removeSchedule(int scheduleId) async {
+    try {
+      final response = await _api.delete("/schedule/$scheduleId");
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception("❌ 일정 삭제 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return;
+    }
+  }
 }

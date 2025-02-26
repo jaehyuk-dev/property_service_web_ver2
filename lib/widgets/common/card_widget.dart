@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 class CardWidget extends StatelessWidget {
   final double width;
   String? title;
-  VoidCallback? onTap;
+  VoidCallback? onEditTap;
+  VoidCallback? onPlusTap;
   final Widget child;
 
   CardWidget({
     super.key,
     this.width = 720,
     this.title,
-    this.onTap,
+    this.onEditTap,
+    this.onPlusTap,
     required this.child,
   });
 
@@ -44,16 +46,7 @@ class CardWidget extends StatelessWidget {
                   color: Color(0xFF374151),
                 ),
               ),
-              onTap == null
-                  ? Spacer()
-                  : InkWell(
-                onTap: onTap,
-                child: Icon(
-                  Icons.edit,
-                  size: 18,
-                  color: Color(0xFF9CA3AF),
-                ),
-              ),
+              _buildButton(),
             ],
           ),
           Padding(
@@ -63,5 +56,47 @@ class CardWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildButton() {
+    if(onEditTap != null){
+      return InkWell(
+        onTap: onEditTap,
+        child: Icon(
+          Icons.edit,
+          size: 18,
+          color: Color(0xFF9CA3AF),
+        ),
+      );
+    } else if(onPlusTap != null){
+      return InkWell(
+        onTap: onPlusTap,
+        child: Container(
+          width: 72,
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: Colors.grey.shade800,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.add, size: 14, color: Colors.white),
+              SizedBox(width: 4),
+              Text(
+                "추가",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    } else {
+      return Spacer();
+    }
   }
 }
