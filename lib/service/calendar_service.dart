@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:property_service_web_ver2/model/calendar/schedule_model.dart';
+import 'package:property_service_web_ver2/models/calendar/schedule_model.dart';
 
 import '../core/utils/api_utils.dart';
-import '../model/calendar/calendar_event_model.dart';
+import '../models/calendar/calendar_event_model.dart';
 import '../models/calendar/schedule_register_model.dart';
 
 

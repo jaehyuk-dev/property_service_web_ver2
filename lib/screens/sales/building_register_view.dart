@@ -30,8 +30,6 @@ class _BuildingRegisterState extends State<BuildingRegister> {
   late LoadingState loadingState;
   final PropertyService propertyService = PropertyService();
 
-  final _formKey = GlobalKey<FormState>();
-
   // 컨트롤러 정의
   final TextEditingController buildingName = TextEditingController();
 
@@ -84,8 +82,7 @@ class _BuildingRegisterState extends State<BuildingRegister> {
     }
   }
 
-
-  Future<void> _registerClient() async {
+  Future<void> _registerBuilding() async {
     loadingState.setLoading(true);
     FileUploadModel? fileUploadResponse;
 
@@ -114,14 +111,6 @@ class _BuildingRegisterState extends State<BuildingRegister> {
       );
       return;
     }
-
-    print("🧐 필수 필드 확인:");
-    print("buildingZoneCode: $buildingZoneCode");
-    print("buildingAddress: $buildingAddress");
-    print("buildingJibunAddress: $buildingJibunAddress");
-    print("buildingCompletedYear: ${buildingCompletedYear.text}");
-    print("buildingParkingAreaCount: ${buildingParkingAreaCount.text}");
-    print("buildingElevatorCount: ${buildingElevatorCount.text}");
 
     // 2. 필수 필드 체크
     if (buildingZoneCode == null ||
@@ -188,7 +177,7 @@ class _BuildingRegisterState extends State<BuildingRegister> {
     return SubLayout(
       screenType: ScreenType.BuildingRegister,
       buttonText: "등록",
-      onTap: _registerClient,
+      onTap: _registerBuilding,
       child: Column(
         children: [
           Row(

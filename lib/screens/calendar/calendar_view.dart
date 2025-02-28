@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:property_service_web_ver2/core/enums/screen_type.dart';
 import 'package:property_service_web_ver2/core/utils/toast_manager.dart';
-import 'package:property_service_web_ver2/model/calendar/schedule_model.dart';
+import 'package:property_service_web_ver2/models/calendar/schedule_model.dart';
 import 'package:property_service_web_ver2/widgets/common/card_widget.dart';
 import 'package:property_service_web_ver2/widgets/common/sub_layout.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/foramt_utils.dart';
-import '../../model/calendar/calendar_event_model.dart';
+import '../../models/calendar/calendar_event_model.dart';
 import '../../service/calendar_service.dart';
 import '../../widgets/common/rotating_house_indicator.dart';
 

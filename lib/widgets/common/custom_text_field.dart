@@ -13,7 +13,6 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters; // ✅ 추가
   final String suffixText;
 
-
   const CustomTextField({
     super.key,
     required this.label,

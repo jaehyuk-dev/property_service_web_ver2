@@ -234,7 +234,7 @@ class DialogUtils {
             borderRadius: BorderRadius.circular(8), // 테두리 둥근 정도
           ),
           child: SizedBox(
-            width: 400,
+            width: width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -412,6 +412,69 @@ class DialogUtils {
                 ),
               ],
             ),
+          ),
+        );
+      },
+    );
+  }
+
+  // 이미지 크게 보기
+  static void showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Stack(
+            children: [
+              // 이미지 확대 뷰
+              InteractiveViewer(
+                panEnabled: true, // 드래그 가능
+                boundaryMargin: EdgeInsets.all(20),
+                minScale: 0.5, // 최소 축소 배율
+                maxScale: 4.0, // 최대 확대 배율
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.contain,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        width: 300,
+                        height: 300,
+                        color: Colors.grey.shade300,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 300,
+                        height: 300,
+                        color: Colors.grey.shade300,
+                        child: Center(
+                          child: Text(
+                            "Image Error",
+                            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              // 닫기 버튼
+              Positioned(
+                top: 10,
+                right: 10,
+                child: IconButton(
+                  icon: Icon(Icons.close, color: Colors.grey[800], size: 30),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
           ),
         );
       },
