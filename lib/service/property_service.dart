@@ -5,8 +5,10 @@ import 'package:property_service_web_ver2/models/common/file_upload_model.dart';
 import 'package:property_service_web_ver2/models/property/building_detail_model.dart';
 import 'package:property_service_web_ver2/models/property/building_register_model.dart';
 import 'package:property_service_web_ver2/models/property/building_summary_model.dart';
+import 'package:property_service_web_ver2/models/property/property_detail_model.dart';
 import 'package:property_service_web_ver2/models/property/property_recap_model.dart';
 import 'package:property_service_web_ver2/models/property/property_register_model.dart';
+import 'package:property_service_web_ver2/models/property/property_summary_model.dart';
 
 import '../core/utils/api_utils.dart';
 import '../models/common/image_file_model.dart';
@@ -92,7 +94,7 @@ class PropertyService{
     }
   }
 
-  // 고객 상세 정보 조회 API
+  // 건물 상세 정보 조회 API
   Future<BuildingDetailModel?> searchBuildingDetail(int buildingId) async {
     try {
       final response = await _api.get("/property/building/$buildingId");
@@ -182,4 +184,36 @@ class PropertyService{
     }
   }
 
+  // 매물 간략 목록 검색 API 호출
+  Future<List<PropertySummaryModel>> searchPropertySummaryList(SearchCondition condition) async {
+    try {
+      final response = await _api.get("/property/summary-list", params: condition.toJson());
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['data'];
+        return data.map((json) => PropertySummaryModel.fromJson(json)).toList();
+      } else {
+        throw Exception("❌ 고객 검색 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return [];
+    }
+  }
+
+  // 매물 상세 정보 조회 API
+  Future<PropertyDetailModel?> searchPropertyDetail(int propertyId) async {
+    try {
+      final response = await _api.get("/property/$propertyId");
+
+      if (response.statusCode == 200) {
+        return PropertyDetailModel.fromJson(response.data['data']);
+      } else {
+        throw Exception("❌ 고객 상세 정보 조회 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return null;
+    }
+  }
 }

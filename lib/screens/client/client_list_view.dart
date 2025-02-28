@@ -641,7 +641,7 @@ class _ClientListState extends State<ClientList> {
                 Row(
                   children: [
                     Container(
-                      width: 156,
+                      width: 160,
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),

@@ -5,6 +5,7 @@ import 'package:property_service_web_ver2/screens/client/client_list_view.dart';
 import 'package:property_service_web_ver2/screens/client/client_register_view.dart';
 import 'package:property_service_web_ver2/screens/main/main_view.dart';
 import 'package:property_service_web_ver2/screens/sales/building_register_view.dart';
+import 'package:property_service_web_ver2/screens/sales/property_list_view.dart';
 import 'package:property_service_web_ver2/screens/sales/property_register_view.dart';
 import 'dart:html' as html;
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
         //   bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         // ),
       ),
-      home: isMobileBrowser() ? MobileView() : LoginView(),
+      home: isMobileBrowser() ? MobileView() : PropertyList(),
     );
   }
 }
