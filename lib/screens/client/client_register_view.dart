@@ -155,7 +155,6 @@ class _ClientRegisterState extends State<ClientRegister> {
                     ),
                     CustomTextField(label: "", controller: _phoneController),
                     // SizedBox(height: 12),
-
                   ],
                 ),
               ),

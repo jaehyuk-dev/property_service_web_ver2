@@ -35,22 +35,26 @@ class CardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title ?? "",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF374151),
+          if(title != null || onEditTap != null || onPlusTap != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title ?? "",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF374151),
+                  ),
                 ),
-              ),
-              _buildButton(),
-            ],
-          ),
+                _buildButton(),
+              ],
+            ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+            padding:
+            (title == null || onEditTap == null || onPlusTap == null)
+                ? EdgeInsets.fromLTRB(12, 0, 12, 24)
+                : EdgeInsets.symmetric(horizontal: 12, vertical: 24),
             child: child,
           ),
         ],

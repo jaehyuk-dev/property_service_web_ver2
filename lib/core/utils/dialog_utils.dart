@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kpostal_web/model/kakao_address.dart';
 
+import '../../widgets/common/rotating_house_indicator.dart';
 import '../constants/app_colors.dart';
+import 'custom_kakao_address_widget.dart';
 
 class DialogUtils {
 
@@ -333,5 +336,85 @@ class DialogUtils {
       },
     );
     return result ?? false;
+  }
+
+  /// 주소 찾기 다이얼로그
+  static Future<KakaoAddress?> showAddressSearchDialog({
+    required BuildContext context,
+  }) async {
+    bool isPopped = false; // 다이얼로그가 닫혔는지 확인하는 플래그
+
+    return await showDialog<KakaoAddress>(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Container(
+            width: 480,
+            height: 640,
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "주소찾기",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        if (!isPopped) {
+                          isPopped = true;
+                          Navigator.of(context).pop(); // 다이얼로그 닫기
+                        }
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        size: 32,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: RotatingHouseIndicator(),
+                      ),
+                      SingleChildScrollView(
+                        child: CustomKakaoAddressWidget(
+                          onComplete: (KakaoAddress kakaoAddress) {
+                            if (!isPopped) {
+                              Navigator.of(context).pop(kakaoAddress); // 주소 데이터를 반환하며 다이얼로그 닫기
+                              isPopped = true;
+                            }
+                          },
+                          onClose: () {
+                            if (!isPopped) {
+                              Navigator.of(context).pop(); // 다이얼로그 닫기
+                              isPopped = true;
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

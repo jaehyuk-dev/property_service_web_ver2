@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -9,6 +10,9 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final double? height;
   final double? width;
+  final List<TextInputFormatter>? inputFormatters; // ✅ 추가
+  final String suffixText;
+
 
   const CustomTextField({
     super.key,
@@ -19,7 +23,9 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false, // 기본값 설정
     this.obscureText = false, // 기본값 설정
     this.height,
-    this.width
+    this.width,
+    this.inputFormatters, // ✅ 추가
+    this.suffixText = "",
   });
 
   @override
@@ -35,12 +41,14 @@ class CustomTextField extends StatelessWidget {
           readOnly: readOnly,
           obscureText: obscureText,
           maxLines: maxLines ?? 1,
+          inputFormatters: inputFormatters, // ✅ 적용
           style: TextStyle(
             fontSize: 16,
           ),
           decoration: InputDecoration(
             alignLabelWithHint: true,
             labelText: label,
+            suffixText: suffixText.isNotEmpty ? " $suffixText" : null, // ✅ 단위 UI에 표시
             // 기본 테두리 (unfocused)
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
