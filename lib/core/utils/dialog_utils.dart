@@ -22,7 +22,7 @@ class DialogUtils {
             borderRadius: BorderRadius.circular(8), // 테두리 둥근 정도
           ),
           child: SizedBox(
-            width: 400,
+            width: width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,

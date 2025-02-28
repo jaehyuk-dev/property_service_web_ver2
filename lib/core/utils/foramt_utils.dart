@@ -30,4 +30,5 @@ class FormatUtils{
   static String formatToHHMM_forCalendar(DateTime dateTime) {
     return DateFormat('HH시 mm분').format(dateTime);
   }
+
 }

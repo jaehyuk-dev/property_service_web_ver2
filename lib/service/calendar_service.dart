@@ -3,6 +3,7 @@ import 'package:property_service_web_ver2/model/calendar/schedule_model.dart';
 
 import '../core/utils/api_utils.dart';
 import '../model/calendar/calendar_event_model.dart';
+import '../models/calendar/schedule_register_model.dart';
 
 
 class CalendarService {
@@ -86,4 +87,21 @@ class CalendarService {
       return;
     }
   }
+
+  // 일정 등록
+  Future<void> createSchedule(ScheduleRequestModel schedule) async {
+    try {
+      final response = await _api.post("/schedule/", data: schedule.toJson());
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception("❌ 일정 등록 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return;
+    }
+  }
+
 }
