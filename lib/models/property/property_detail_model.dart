@@ -10,23 +10,23 @@ class PropertyDetailModel {
   final String picUser;
   final String propertyStatus;
 
-  final String ownerName;
-  final String ownerPhoneNumber;
-  final String ownerRelation;
+  final String ownerName; //
+  final String ownerPhoneNumber;  //
+  final String ownerRelation; //
 
-  final String roomNumber;
-  final String propertyType;
-  final String propertyFloor;
-  final String roomBathCount;
+  final String roomNumber;  //
+  final String propertyType;  //
+  final String propertyFloor; //
+  final String roomBathCount;   //
   final String mainRoomDirection;
 
-  final double exclusiveArea;
-  final double supplyArea;
+  final double exclusiveArea; //
+  final double supplyArea;    //
 
-  final String approvalDate;
-  final String moveInDate;
-  final String moveOutDate;
-  final String availableMoveInDate;
+  final String approvalDate;  //
+  final String moveInDate;    //
+  final String moveOutDate;   //
+  final String availableMoveInDate; //
 
   final String heatingType;
 

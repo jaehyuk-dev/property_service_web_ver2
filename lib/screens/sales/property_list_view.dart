@@ -140,8 +140,54 @@ class _PropertyListState extends State<PropertyList> {
     }
   }
 
+  // 매물 특이사항 등록
+  void registerPropertyRemark({required int propertyId}) async {
+    TextEditingController propertyRemark = TextEditingController();
 
-  void _fetchDetails() async {
+    await DialogUtils.showCustomDialog<void>(
+        context: context,
+        title: "특이사항 등록",
+        child: CustomTextField(label: "특이사항", controller: propertyRemark, maxLines: 2),
+        onConfirm: () async {
+          if (propertyRemark.text.isEmpty) {
+            await DialogUtils.showAlertDialog(context: context, title: "경고", content: "모든 항목을 입력해 주세요");
+          } else {
+            Navigator.pop(context, true);
+          }
+        }
+    );
+
+    if(propertyRemark.text.isNotEmpty){
+      try {
+        loadingState.setLoading(true);
+        await _propertyService.registerPropertyRemark(propertyId, propertyRemark.text);
+        ToastManager().showToast(context, "특이사항이 등록 되었습니다.");
+        await _fetchDetails();
+      } catch (e) {
+        print("❌ 오류 발생: $e");
+      } finally {
+        loadingState.setLoading(false);
+      }
+    }
+  }
+
+  // 매물 특이사항 삭제
+  void deletePropertyRemark({required int propertyRemarkId}) async {
+    try {
+      loadingState.setLoading(true);
+      await _propertyService.deletePropertyRemark(propertyRemarkId);
+      ToastManager().showToast(context, "특이사항이 제거되었습니다.");
+      await _fetchDetails();
+    } catch (e) {
+      print("❌ 오류 발생: $e");
+    } finally {
+      loadingState.setLoading(false);
+    }
+  }
+
+
+  Future<void> _fetchDetails() async {
+    print(selectedPropertyId);
     await _fetchPropertyDetail();
     await _fetchBuildingDetail();
   }
@@ -163,7 +209,7 @@ class _PropertyListState extends State<PropertyList> {
           children: [
             Container(
               width: 480,
-              height: 724,
+              height: 1460,
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -434,6 +480,204 @@ class _PropertyListState extends State<PropertyList> {
                   ),
                 ),
                 SizedBox(height: 32),
+                CardWidget(
+                  title: "매물 정보",
+                  onEditTap: (){},
+                  width: 960,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF6A8988).withAlpha(26),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.person, color: Color(0xFF6A8988)),
+                            SizedBox(width: 8),
+                            SizedBox(
+                              width: 120,
+                              child: Text(
+                                propertyDetail == null ? "" : "${propertyDetail!.ownerName} (${propertyDetail!.ownerRelation})",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF374151),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 24),
+                            Icon(Icons.call, color: Color(0xFF6A8988)),
+                            SizedBox(width: 8),
+                            Text(
+                              propertyDetail == null ? "" : propertyDetail!.ownerPhoneNumber,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF374151),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("매물 형태", propertyDetail == null ? "" : "${propertyDetail!.propertyType}", icon: Icons.foundation)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("해당 층", propertyDetail == null ? "" : "${propertyDetail!.propertyFloor}", icon: Icons.apartment)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("방 / 욕실 개수", propertyDetail == null ? "" : "${propertyDetail!.roomBathCount}", icon: Icons.business)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("공급 / 전용 면적", propertyDetail == null ? "" : "${propertyDetail!.supplyArea} / ${propertyDetail!.exclusiveArea} m²", icon: Icons.local_parking)),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("사용 승인 일", propertyDetail == null ? "" : "${propertyDetail!.approvalDate}", icon: Icons.calendar_month)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("입주 가능 일", propertyDetail == null ? "" : "${propertyDetail!.availableMoveInDate}", icon: Icons.event_available)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("입실 일", propertyDetail == null ? "" : "${propertyDetail!.moveInDate}", icon: Icons.login_outlined)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("퇴실 일", propertyDetail == null ? "" : "${propertyDetail!.moveOutDate}", icon: Icons.logout_outlined)),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("거실 기준 방향", propertyDetail == null ? "" : "${propertyDetail!.mainRoomDirection}", icon: Icons.explore)),
+                          SizedBox(width: 420, child: _buildBasicInfo2("옵션 목록", propertyDetail == null ? "" : "${propertyDetail!.optionItemList.join(", ")}", icon: Icons.checklist_outlined)),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("관리비", propertyDetail == null ? "" : "${propertyDetail!.maintenancePrice}", icon: Icons.receipt_long)),
+                          SizedBox(width: 420, child: _buildBasicInfo2("관리비 항목", propertyDetail == null ? "" : "${propertyDetail!.maintenaceItemList.join(", ")}", icon: Icons.list)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 32),
+                CardWidget(
+                  title: "거래 정보",
+                  onEditTap: (){},
+                  width: 960,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 480,
+                            child: _buildBasicInfo2(
+                              "거래 유형",
+                              propertyDetail == null
+                                  ? ""
+                                  : propertyDetail!.propertyTransactionList
+                                  .map((e) =>
+                              (e.propertyTransactionType == "월세" || e.propertyTransactionType == "단기")
+                                  ? "${e.propertyTransactionType}\t${FormatUtils.formatCurrency(e.price1)} / ${FormatUtils.formatCurrency(e.price2 ?? 0)}"
+                                  : "${e.propertyTransactionType}\t${FormatUtils.formatCurrency(e.price1)}")
+                                  .join("\t     "),// 리스트를 문자열로 변환
+                              icon: Icons.swap_horiz, // 거래 관련 아이콘
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("관리비", propertyDetail == null ? "" : "${propertyDetail!.maintenancePrice} 원", icon: Icons.receipt_long)),
+                          SizedBox(width: 420, child: _buildBasicInfo2("관리비 항목", propertyDetail == null ? "" : "${propertyDetail!.maintenaceItemList.join(", ")}", icon: Icons.list)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+                CardWidget(
+                  title: "특이사항",
+                  width: 960,
+                  onPlusTap: propertyDetail == null
+                      ? null
+                      : () async {
+                    // 일정 추가 기능 추가 가능
+                    registerPropertyRemark(propertyId: propertyDetail!.propertyId);
+                  },
+                  child: SizedBox(
+                    height: 160,
+                    child: propertyDetail == null || propertyDetail!.propertyRemarkList.isEmpty
+                        ? Center(child: Text("등록된 특이사항이 없습니다."))
+                        : ListView.separated(
+                      itemCount: propertyDetail!.propertyRemarkList.length,
+                      itemBuilder: (context, index){
+                        final remark = propertyDetail!.propertyRemarkList[index];
+                        return _buildPropertyRemarkItem(remark);
+                      },
+                      separatorBuilder: (context, index) => SizedBox(height: 12),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 24),
+                CardWidget(
+                  title: "매물 사진",
+                  width: 960,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 32),
+                      SizedBox(
+                        height: 160,
+                        child: propertyDetail == null || propertyDetail!.propertyImageList.isEmpty
+                            ? Center(child: Text("등록된 건물 사진이 없습니다."))
+                            : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: propertyDetail!.propertyImageList.length,
+                          itemBuilder: (context, index) {
+                            final image = propertyDetail!.propertyImageList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                DialogUtils.showImageDialog(context, "http://localhost:8080/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(
+                                    "http://localhost:8080/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
+                                    width: 160,
+                                    height: 160,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        width: 160,
+                                        height: 160,
+                                        color: Colors.grey.shade300,
+                                        child: Center(child: CircularProgressIndicator()),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 160,
+                                        height: 160,
+                                        color: Colors.grey.shade300,
+                                        child: Center(
+                                          child: Text(
+                                            "Image Error",
+                                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )
           ],
@@ -607,6 +851,59 @@ class _PropertyListState extends State<PropertyList> {
     );
   }
 
+  Widget _buildBasicInfo2(String label, String content, {VoidCallback? onEditTap, IconData? icon}){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            if(icon != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(icon, size: 20, color: Color(0xFF6A8988),),
+              ),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF6B7280),
+              ),
+            ),
+            if (onEditTap != null)
+              Row(
+                children: [
+                  SizedBox(width: 8),
+                  InkWell(
+                    onTap: onEditTap,
+                    child: Icon(
+                      Icons.credit_card_sharp,
+                      size: 18,
+                      color: Color(0xFF9CA3AF),
+                    ),
+                  )
+                ],
+              ),
+          ],
+        ),
+        SizedBox(height: 8),
+        Row(
+          children: [
+            SizedBox(width: 30),
+            Text(
+              content,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   Widget _buildRemarkItem(RemarkModel remark) {
     ValueNotifier<bool> _isHovered = ValueNotifier(false);
     return MouseRegion(
@@ -637,6 +934,62 @@ class _PropertyListState extends State<PropertyList> {
                       icon: Icon(Icons.delete, color: Colors.grey),
                       iconSize: 16,
                       onPressed: () => deleteBuildingRemark(clientRemarkId: remark.remarkId),
+                      hoverColor: Colors.transparent,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "작성자: ${remark.createdBy}",
+                style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+              ),
+              Text(
+                FormatUtils.formatToYYYYMMDD(remark.createdAt),
+                style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPropertyRemarkItem(RemarkModel remark) {
+    ValueNotifier<bool> _isHovered = ValueNotifier(false);
+    return MouseRegion(
+      onEnter: (_) => _isHovered.value = true,
+      onExit: (_) => _isHovered.value = false,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                remark.remark,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Spacer(),
+              ValueListenableBuilder<bool>(
+                valueListenable: _isHovered,
+                builder: (context, isHovered, child) {
+                  return AnimatedOpacity(
+                    opacity: isHovered ? 1.0 : 0.0,
+                    duration: Duration(milliseconds: 100),
+                    child: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.grey),
+                      iconSize: 16,
+                      onPressed: () => deletePropertyRemark(propertyRemarkId: remark.remarkId),
                       hoverColor: Colors.transparent,
                     ),
                   );

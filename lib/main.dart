@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         //   bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
         // ),
       ),
-      home: isMobileBrowser() ? MobileView() : PropertyList(),
+      home: isMobileBrowser() ? MobileView() : LoginView(),
     );
   }
 }

@@ -110,7 +110,7 @@ class PropertyService{
     }
   }
 
-  // 특이사항 추가
+  // 건물 특이사항 추가
   Future<void> registerBuildingRemark(int buildingId, String buildingRemark) async {
     try {
       final response = await _api.post("/property/building/remark", data: {"buildingId": buildingId, "buildingRemark": buildingRemark});
@@ -125,7 +125,7 @@ class PropertyService{
     }
   }
 
-  // 고객 특이사항 삭제 api
+  // 건물 특이사항 삭제 api
   Future<void> deleteBuildingRemark(int buildingId) async {
     try {
       final response = await _api.delete("/property/building/remark/$buildingId");
@@ -214,6 +214,37 @@ class PropertyService{
     } catch (e) {
       print("🚨 API 호출 중 오류 발생: $e");
       return null;
+    }
+  }
+
+  // 매물 특이사항 추가
+  Future<void> registerPropertyRemark(int propertyId, String propertyRemark) async {
+    try {
+      final response = await _api.post("/property/remark", data: {"propertyId": propertyId, "propertyRemark": propertyRemark});
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception("❌ 특이사항 등록 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return;
+    }
+  }
+
+  // 매물 특이사항 삭제 api
+  Future<void> deletePropertyRemark(int propertyRemarkId) async {
+    try {
+      final response = await _api.delete("/property/remark/$propertyRemarkId");
+
+      if (response.statusCode == 200) {
+        return;
+      } else {
+        throw Exception("❌ 매물 특이사항 삭제 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return;
     }
   }
 }
