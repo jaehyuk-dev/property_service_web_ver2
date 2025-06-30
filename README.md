@@ -1,16 +1,330 @@
-# property_service_web_ver2
+# Property Service
 
-A new Flutter project.
+## 종합 부동산 영업 관리 플랫폼
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 개요
 
-A few resources to get you started if this is your first Flutter project:
+Property Service는 **부동산 중개업자들이 고객, 매출, 매물 정보를 종합적인 시스템에서 관리할 수 있도록 설계된 종합적인 부동산 영업 관리 서비스**입니다.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+사용자는 웹 인터페이스를 통해 실시간으로 데이터를 입력, 조회, 수정 및 삭제할 수 있으며, 다양한 **부동산 관리 작업을 자동화**하고 효율화할 수 있습니다.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 핵심 가치
+
+- 🎯 **효율성**
+- ⚡ **정확성**
+- 🔄 **자동화**
+
+---
+
+## 도입 배경
+
+### 🚨 Problems (현재 문제점들)
+
+부동산 중개업계는 아직도 많은 업무가 수작업으로 진행되고 있어 다음과 같은 문제점들이 발생하고 있습니다:
+
+| 문제 영역 | 구체적 문제점 |
+| --- | --- |
+| **⏰ 시간 소모적** | • 엑셀/종이를 이용한 수작업 데이터 입력
+• 고객 정보 찾기에 많은 시간 소요
+• 매물 현황 파악을 위한 반복 업무 |
+| **❌ 데이터 오류** | • 수동 입력으로 인한 오타 및 누락
+• 중복 데이터 입력
+• 최신 정보 업데이트 지연 |
+| **📋 정보의 파편화** | • 여러 파일과 시스템에 정보 분산
+• 고객-매물-일정 연관 정보 추적 어려움
+• 팀원 간 정보 공유 부족 |
+| **📊 분석 부족** | • 매출 트렌드 파악 어려움
+• 고객 패턴 분석 불가
+• 효과적인 영업 전략 수립 한계 |
+| **🔄 업무 비효율** | • 동일 작업 반복 수행
+• 일정 관리의 복잡성
+• 고객 응대 시 정보 확인 지연 |
+
+### 💡 How to Solve? (해결 방안)
+
+Property Service는 위의 문제점들을 다음과 같이 해결합니다:
+
+### 🎯 **통합 디지털 플랫폼 구축**
+
+```
+기존: 엑셀 + 메모장 + 수기 작성
+  ↓
+개선: 하나의 웹 플랫폼에서 모든 업무 처리
+```
+
+**구체적 해결책:**
+
+- **중앙집중식 데이터 관리** → 모든 정보를 하나의 데이터베이스에 저장
+- **실시간 동기화** → 팀원 모두가 동일한 최신 정보 공유
+- **자동화된 워크플로우** → 상태 변경 시 자동 알림 및 업데이트
+
+### 🔍 **스마트 검색 및 필터링**
+
+```
+기존: 파일 하나씩 열어서 수동 검색
+  ↓
+개선: 키워드 입력만으로 즉시 정보 조회
+```
+
+**구체적 해결책:**
+
+- **고급 검색 기능** → 고객명, 연락처, 지역 등 다양한 조건으로 검색
+- **스마트 필터** → 매물 조건, 고객 상태별 빠른 분류
+
+### ⚡ **업무 자동화 및 효율성 증대**
+
+```
+기존: 모든 작업을 수동으로 처리
+  ↓
+개선: 반복 업무 자동화로 핵심 업무에 집중
+```
+
+**구체적 해결책:**
+
+- **상태 자동 업데이트** → 계약 단계별 자동 진행 관리
+
+### 🔐 **데이터 보안 및 백업**
+
+```
+기존: 파일 분실 위험, 보안 취약
+  ↓
+개선: 클라우드 기반 안전한 데이터 관리
+
+```
+
+**구체적 해결책:**
+
+- **암호화된 데이터 저장** → 개인정보 보호 강화
+- **자동 백업** → 데이터 손실 방지
+- **접근 권한 관리** → 권한별 차등 접근 권한
+
+---
+
+## 통합 관리 플랫폼
+
+> "Property Service는 모든 정보를 한 곳에서 체계적으로 관리할 수 있도록 다음과 같은 기능을 제공합니다"
+> 
+
+### 🏠 매물 관리
+
+- 보유하는 매물에 대하여 세부적으로 관리할 수 있습니다
+- 매물들에 대한 상태관리 및 특이사항으로 추적할 수 있습니다
+- 임대인, 담당자의 명확한 기록을 통해 효율적인 매물 관리가 가능합니다
+
+### 🤝 고객 관리
+
+- 고객들의 요구사항을 세밀하게 기록하여 고객 맞춤형 중개를 진행할 수 있습니다
+- 고객의 상태관리 및 특이사항을 효과적으로 추적할 수 있습니다
+- 기록된 고객의 특이사항과 일정을 통하여 서비스의 질적 향상을 기대할 수 있습니다
+
+### 📊 매출 관리
+
+- 순차적 매출 기록을 확인하여 매출 관리를 효율적으로 할 수 있습니다
+- 기간별 매출 현황을 파악하여 사업전략의 결정을 도출 수 있습니다
+
+### 📅 일정 관리
+
+- 타원들의 업무일정 상황을 공유하여 업무 커뮤니케이션의 향상을 기대할 수 있습니다
+- 고객과의 미팅 일정을 효율적으로 관리할 수 있습니다
+- 업무일정을 축약적으로 파악하여 대응할 수 있습니다
+
+---
+
+## 기대 효과
+
+### 🔍 업무 효율성 증가
+
+수작업으로 진행되던 다양한 부동산 관리 업무를 디지털화하여 업무 효율성을 높이고, 중개업자의 생산성을 증대시킵니다.
+
+### 📈 정보의 정확성
+
+실시간 데이터 업데이트와 중앙집중식 정보 관리를 통해 정보의 정확성과 신뢰성을 보장합니다.
+
+### 🏢 매물 집계 및 분석
+
+매물 데이터를 체계적으로 집계하고 분석하여 부동산 중개업체의 비즈니스 의사결정을 지원합니다.
+
+---
+
+## 시스템 아키텍처
+
+### 🏗️ 전체 시스템 구조
+
+```
+🖥️ 클라이언트 계층 (Flutter Web)
+    ↓ HTTP/REST API
+🚀 애플리케이션 서버 (Spring Boot)
+    ↓ JPA/JDBC
+🗄️ 데이터베이스 (PostgreSQL)
+```
+
+### 🖥️ 클라이언트 계층 (Flutter Web)
+
+![Image](https://github.com/user-attachments/assets/9f5f1876-c153-47c9-8666-d8799368087d)
+
+| 컴포넌트 | 역할 |
+| --- | --- |
+| **사용자 인터페이스** | 고객관리, 매물관리, 일정관리, 매출관리 화면 |
+| **ViewModels** | Provider를 활용한 상태관리 |
+| **ApiCallUtils** | HTTP 요청 처리 및 서버 통신 |
+| **Models** | 데이터 모델 정의 |
+
+### 🚀 애플리케이션 서버 (Spring Boot)
+
+![Image](https://github.com/user-attachments/assets/b5712e7a-8ed3-421c-bfea-e4f6ca9af706)
+
+### Controllers (REST API 계층)
+
+- `AuthController` - 인증 및 권한 관리
+    - `ClientController` - 고객 관리 API
+    - `PropertyController` - 매물 관리 API
+    - `ScheduleController` - 일정 관리 API
+    - `RevenueController` - 매출 관리 API
+    
+    ### Services (비즈니스 로직 계층)
+    
+    - `AuthService` - 인증 비즈니스 로직
+    - `ClientService` - 고객 관리 비즈니스 로직
+    - `PropertyService` - 매물 관리 비즈니스 로직
+    - `ScheduleService` - 일정 관리 비즈니스 로직
+    - `RevenueService` - 매출 관리 비즈니스 로직
+    
+    ### Repository (데이터 접근 계층)
+    
+    - `ClientRepository` - 고객 데이터 접근
+    - `PropertyRepository` - 매물 데이터 접근
+    - `ScheduleRepository` - 일정 데이터 접근
+    - `RevenueRepository` - 매출 데이터 접근
+    
+    ### 핵심 기술 컴포넌트
+    
+    - **JWT 인증 시스템** - 토큰 기반 인증 및 권한 관리
+    - **QueryDSL** - 타입 안전한 동적 쿼리 생성
+
+### 🗄️ 데이터베이스 (PostgreSQL)
+
+![Image](https://github.com/user-attachments/assets/de8f0c79-ae9b-4fe9-92b7-8c3f78bc2c4a)
+
+### 주요 테이블
+
+- 📋 **Client** - 고객 정보 관리
+- 🏢 **Property** - 매물 정보 관리
+- 🏗️ **Building** - 빌딩 정보 관리
+- 📅 **Schedule** - 일정 정보 관리
+- 💰 **Revenue** - 매출 정보 관리
+
+---
+
+## 기술 스택
+
+### Frontend
+
+- **Framework:** Flutter Web
+- **상태관리:** Provider
+- **HTTP 클라이언트:** Dio/HTTP
+- **UI 컴포넌트:** Material Design
+
+### Backend
+
+- **Framework:** Spring Boot 3.4.2
+- **언어:** Java 21
+- **인증:** JWT
+- **ORM:** JPA + QueryDSL
+- **데이터베이스:** PostgreSQL
+- **빌드 도구:** Gradle
+
+### Infrastructure
+
+- **배포:** Vultr
+- **웹서버:** Nginx
+
+---
+
+## 주요 기능 플로우
+
+### 🎯 고객 관리 프로세스
+
+```
+고객 등록 → 상담중 → 계약예정 → 입주예정 → 계약완료
+```
+
+### 🏠 매물 관리 프로세스
+
+```
+매물 등록 → 광고중 → 계약예정 → 계약완료
+```
+
+### 📅 일정 관리 프로세스
+
+- **캘린더 뷰** - 월/주/일 단위 일정 조회
+- **일정 유형** - 방문, 확인, 계약 일정 구분
+- **알림 기능** - 중요 일정 사전 알림
+
+### 💰 매출 관리 프로세스
+
+- **수수료 계산** - 거래 유형별 자동 계산 (예정)
+- **통계 및 분석** - 기간별, 담당자별 매출 분석
+
+---
+
+## 데이터베이스 설계
+
+### ERD
+
+```
+
+     [Office]
+   (중개사무소)
+        │
+        │ 
+        ◇ ─── 1:N
+        │
+   [OfficeUser]
+     (직원)
+        │
+        │ 
+        ◇ ─── 1:N
+        │
+    [Client] ────────◇──────── [ShowingProperty] ────────◇──────── [Property]
+     (고객)                       <보여줄 매물>                         (매물)
+        │                                                               │
+        │                                                               │ 
+        ◇ ─── 1:N                                                      ◇ ─── N:1
+        │                                                               │
+   [Schedule]                                                        [Building]
+     (일정)                                                            (빌딩)
+
+```
+
+### 📊 핵심 테이블 구조
+
+### Client (고객)
+
+- 고객 정보, 상태, 담당자, 희망 거래 유형 등
+
+### Property (매물)
+
+- 매물 상세정보, 상태, 임대인 정보 등
+
+### Building (빌딩)
+
+- 건물 기본정보, 시설정보, 관리정보 등
+
+### Schedule (일정)
+
+- 일정 유형, 날짜/시간, 완료여부 등
+
+### Revenue (매출)
+
+- 거래정보, 수수료, 담당자 등
+
+---
+
+### 🔧 개발 정보
+
+- **Frontend Repository:** [`property-service-web`](https://github.com/jaehyuk-dev/property_service_web)
+- **Backend Repository:** [`property-service-feb25`](https://github.com/jaehyuk-dev/property_service_feb25)
+- **Database:** PostgreSQL 15
+- **배포 환경:** OCI/AWS/GCP (예정)
