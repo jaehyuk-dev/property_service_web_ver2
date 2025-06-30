@@ -327,7 +327,7 @@ Property Service는 위의 문제점들을 다음과 같이 해결합니다:
 
 ### 🔧 개발 정보
 
-- **Frontend Repository:** [`property-service-web`](https://github.com/jaehyuk-dev/property_service_web)
+- **Frontend Repository:** [`property-service-web_ver2`](https://github.com/jaehyuk-dev/property_service_web_ver2)
 - **Backend Repository:** [`property-service-feb25`](https://github.com/jaehyuk-dev/property_service_feb25)
 - **Database:** PostgreSQL 15
 - **배포 환경:** OCI/AWS/GCP (예정)
