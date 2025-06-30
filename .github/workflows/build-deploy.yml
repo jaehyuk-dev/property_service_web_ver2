@@ -27,6 +27,9 @@ jobs:
       - name: Add .nojekyll
         run: echo > build/web/.nojekyll
 
+      - name: Create CNAME file
+        run: echo 'xn--h50bw7n3vhqjd47vujaqg.site' > build/web/CNAME
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
