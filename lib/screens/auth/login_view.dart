@@ -289,7 +289,11 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // 비밀번호 찾기 기능 구현
+                          DialogUtils.showAlertDialog(
+                              context: context,
+                              title: "서비스 준비 중",
+                              content: "서비스 준비 중입니다."
+                          );
                         },
                         style: ButtonStyle(
                           overlayColor: WidgetStateProperty.all(AppColors.color1),
@@ -335,7 +339,11 @@ class _LoginViewState extends State<LoginView> {
                       SizedBox(width: 8),
                       TextButton(
                         onPressed: () {
-                          // 회원가입 기능 구현
+                          DialogUtils.showAlertDialog(
+                              context: context,
+                              title: "서비스 준비 중",
+                              content: "서비스 준비 중입니다."
+                          );
                         },
                         style: ButtonStyle(
                           overlayColor: WidgetStateProperty.all(AppColors.color1),
