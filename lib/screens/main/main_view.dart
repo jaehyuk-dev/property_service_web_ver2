@@ -21,10 +21,23 @@ class MainViewState extends State<MainView> {
   // 현재 활성화된 화면의 상태를 저장
   ScreenType activeScreen = ScreenType.Dashboard;
 
+  // 사용자 정보 저장 변수 추가
+  String userName = '';
+  String userRole = '';
+
   // 상태 변경을 관리하는 함수
   void updateActiveScreen(ScreenType screen) {
     setState(() {
       activeScreen = screen;
+    });
+  }
+
+  // 사용자 정보 로드 함수 추가
+  Future<void> _loadUserInfo() async {
+    final userInfo = await _authService.getUserInfo();
+    setState(() {
+      userName = userInfo['name'] ?? '';
+      userRole = userInfo['role'] ?? '';
     });
   }
 
@@ -74,6 +87,7 @@ class MainViewState extends State<MainView> {
   void initState() {
     // TODO: implement initState
     loadingState = Provider.of<LoadingState>(context, listen: false);
+    _loadUserInfo(); // 사용자 정보 로드
     super.initState();
   }
 
@@ -112,20 +126,33 @@ class MainViewState extends State<MainView> {
                               color: Colors.white,
                             ),
                           ),
-                          InkWell(
-                            onTap: _handleLogout, // 로그아웃 함수 연결
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: Colors.white.withOpacity(0.1),
+                          Row(
+                            children: [
+                              Text(
+                                "$userName ${userRole == "대표" ? userRole : ""}님, 안녕하세요.",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
                               ),
-                              child: Icon(
-                                Icons.logout,
-                                size: 20,
-                                color: Colors.white,
+                              SizedBox(width: 16), // 간격 조정
+                              InkWell(
+                                onTap: _handleLogout, // 로그아웃 함수 연결
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: Colors.white.withOpacity(0.1),
+                                  ),
+                                  child: Icon(
+                                    Icons.logout,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
