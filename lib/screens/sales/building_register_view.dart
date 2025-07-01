@@ -85,23 +85,22 @@ class _BuildingRegisterState extends State<BuildingRegister> {
   Future<void> _registerBuilding() async {
     loadingState.setLoading(true);
     FileUploadModel? fileUploadResponse;
+    List<String> photoUrls = []; // 빈 리스트로 초기화
 
-    // 1. 이미지 업로드
+    // 1. 이미지가 있는 경우만 업로드
     try {
-      if (buildingImageList.imageFileModelList.isEmpty) {
-        ToastManager().showToast(context, "이미지를 선택해주세요.");
-        return;
+      if (buildingImageList.imageFileModelList.isNotEmpty) {
+        fileUploadResponse = await propertyService.uploadBuildingImages(buildingImageList.imageFileModelList);
+
+        if (fileUploadResponse.fileUrls.isNotEmpty) {
+          photoUrls = fileUploadResponse.fileUrls;
+          print("✅ 업로드된 파일 URL 리스트: ${fileUploadResponse.fileUrls}");
+        } else {
+          ToastManager().showToast(context, "건물 이미지 업로드 실패");
+          return;
+        }
       }
-
-      fileUploadResponse = await propertyService.uploadBuildingImages(buildingImageList.imageFileModelList);
-
-      if (fileUploadResponse == null || fileUploadResponse.fileUrls.isEmpty) {
-        ToastManager().showToast(context, "건물 이미지 업로드 실패");
-        return;
-      }
-
-      print("✅ 업로드된 파일 URL 리스트: ${fileUploadResponse.fileUrls}");
-
+      // 이미지가 없는 경우는 그냥 빈 리스트로 진행
     } catch (e) {
       print("🚨 이미지 업로드 실패: $e");
       await DialogUtils.showAlertDialog(
@@ -112,7 +111,7 @@ class _BuildingRegisterState extends State<BuildingRegister> {
       return;
     }
 
-    // 2. 필수 필드 체크
+    // 2. 필수 필드 체크 (이미지 제외)
     if (buildingZoneCode == null ||
         buildingAddress == null ||
         buildingJibunAddress == null ||
@@ -144,8 +143,8 @@ class _BuildingRegisterState extends State<BuildingRegister> {
         buildingCommonPassword: buildingCommonPassword.text,
         buildingHasIllegal: buildingHasIllegal == "있음",
         buildingRemark: buildingRemark.text,
-        buildingMainPhotoIndex: buildingImageList.representativeImageIndex ?? 0,
-        photoList: fileUploadResponse.fileUrls,
+        buildingMainPhotoIndex: photoUrls.isNotEmpty ? (buildingImageList.representativeImageIndex ?? 0) : 0,
+        photoList: photoUrls, // 빈 리스트이거나 업로드된 URL 리스트
       );
 
       await propertyService.registerBuilding(request);
