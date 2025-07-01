@@ -429,12 +429,29 @@ class _ClientListState extends State<ClientList> {
     TextEditingController clientName = TextEditingController(text: detail.clientName);
     TextEditingController clientPhoneNumber = TextEditingController(text: detail.clientPhoneNumber);
     int? clientGender = detail.clientGender == "남성" ? 31 : 32;
-    String? clientSource = detail.clientSource;
-    TextEditingController clientSourceOther =
-    TextEditingController(text: detail.clientSource == "기타" ? detail.clientSource : "");
-    String? clientType = detail.clientType;
-    TextEditingController clientTypeOther =
-    TextEditingController(text: detail.clientType == "기타" ? detail.clientType : "");
+
+    // 유입 경로 초기값 설정 로직 수정
+    String? clientSource;
+    TextEditingController clientSourceOther = TextEditingController();
+
+    if (["직방", "다방", "피터팬", "워킹"].contains(detail.clientSource)) {
+      clientSource = detail.clientSource;
+    } else {
+      clientSource = "기타";
+      clientSourceOther.text = detail.clientSource; // 기타 텍스트 필드에 실제 값 설정
+    }
+
+    // 고객 유형 초기값 설정 로직 수정
+    String? clientType;
+    TextEditingController clientTypeOther = TextEditingController();
+
+    if (["학생", "직장인", "외국인"].contains(detail.clientType)) {
+      clientType = detail.clientType;
+    } else {
+      clientType = "기타";
+      clientTypeOther.text = detail.clientType; // 기타 텍스트 필드에 실제 값 설정
+    }
+
     DateTime? expectedMoveInDate = detail.clientExpectedMoveInDate;
 
     ClientUpdateModel? updateModel = await DialogUtils.showCustomDialog<ClientUpdateModel>(
@@ -521,8 +538,12 @@ class _ClientListState extends State<ClientList> {
             clientName: clientName.text,
             clientPhoneNumber: clientPhoneNumber.text,
             clientGenderCode: clientGender!,
-            clientSource: clientSource!,
-            clientType: clientType!,
+            clientSource: clientSource == "기타" && clientSourceOther.text.trim().isNotEmpty
+                ? clientSourceOther.text.trim()
+                : clientSource!,
+            clientType: clientType == "기타" && clientTypeOther.text.trim().isNotEmpty
+                ? clientTypeOther.text.trim()
+                : clientType!,
             expectedMoveInDate: FormatUtils.formatToYYYYmmDD_forAPI(expectedMoveInDate!),
           );
 
