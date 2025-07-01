@@ -12,7 +12,8 @@ class ApiUtils {
   ApiUtils._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: 'http://localhost:8080/api',
+        // baseUrl: 'http://localhost:8080/api', // 로컬
+        baseUrl: 'https://api.xn--h50bw7n3vhqjd47vujaqg.site/api',  // 개발
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {
