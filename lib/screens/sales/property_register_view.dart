@@ -9,6 +9,7 @@ import 'package:property_service_web_ver2/widgets/common/card_widget.dart';
 import 'package:property_service_web_ver2/widgets/common/sub_layout.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/constants/app_config.dart';
 import '../../core/enums/datepicker_type.dart';
 import '../../core/utils/dialog_utils.dart';
 import '../../core/utils/foramt_utils.dart';
@@ -649,14 +650,14 @@ class _PropertyRegisterState extends State<PropertyRegister> {
                                           final image = buildingDetail!.buildingImageList[index];
                                           return GestureDetector(
                                             onTap: () {
-                                              DialogUtils.showImageDialog(context, "http://localhost:8080/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
+                                              DialogUtils.showImageDialog(context, "${AppConfig.fileBaseUrl}/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.symmetric(horizontal: 8),
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(8),
                                                 child: Image.network(
-                                                  "http://localhost:8080/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
+                                                  "${AppConfig.fileBaseUrl}/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
                                                   width: 160,
                                                   height: 160,
                                                   fit: BoxFit.cover,
@@ -1189,7 +1190,7 @@ class _PropertyRegisterState extends State<PropertyRegister> {
               borderRadius: BorderRadius.circular(8),
               child: (building.buildingMainPhotoUrl != null && building.buildingMainPhotoUrl!.isNotEmpty)
                   ? Image.network(
-                "http://localhost:8080/${building.buildingMainPhotoUrl}", 
+                "${AppConfig.fileBaseUrl}/${building.buildingMainPhotoUrl}",
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,

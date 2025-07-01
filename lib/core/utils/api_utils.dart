@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
+import '../constants/app_config.dart';
+
 class ApiUtils {
   static final ApiUtils _instance = ApiUtils._internal();
   factory ApiUtils() => _instance;
@@ -12,8 +14,7 @@ class ApiUtils {
   ApiUtils._internal() {
     _dio = Dio(
       BaseOptions(
-        // baseUrl: 'http://localhost:8080/api', // 로컬
-        baseUrl: 'https://api.xn--h50bw7n3vhqjd47vujaqg.site/api',  // 개발
+        baseUrl: AppConfig.apiBaseUrl, // 로컬
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {

@@ -7,6 +7,7 @@ import 'package:property_service_web_ver2/widgets/common/sub_layout.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_config.dart';
 import '../../core/utils/dialog_utils.dart';
 import '../../core/utils/foramt_utils.dart';
 import '../../core/utils/toast_manager.dart';
@@ -429,14 +430,14 @@ class _PropertyListState extends State<PropertyList> {
                                             final image = buildingDetail!.buildingImageList[index];
                                             return GestureDetector(
                                               onTap: () {
-                                                DialogUtils.showImageDialog(context, "http://localhost:8080/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
+                                                DialogUtils.showImageDialog(context, "${AppConfig.fileBaseUrl}/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 8),
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(8),
                                                   child: Image.network(
-                                                    "http://localhost:8080/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
+                                                    "${AppConfig.fileBaseUrl}/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
                                                     width: 160,
                                                     height: 160,
                                                     fit: BoxFit.cover,
@@ -635,14 +636,14 @@ class _PropertyListState extends State<PropertyList> {
                             final image = propertyDetail!.propertyImageList[index];
                             return GestureDetector(
                               onTap: () {
-                                DialogUtils.showImageDialog(context, "http://localhost:8080/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
+                                DialogUtils.showImageDialog(context, "${AppConfig.fileBaseUrl}/${image.imageUrl}"); // ✅ 클릭하면 확대 팝업
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 8),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
-                                    "http://localhost:8080/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
+                                    "${AppConfig.fileBaseUrl}/${image.imageUrl}", // ✅ 실제 API 도메인으로 변경 필요
                                     width: 160,
                                     height: 160,
                                     fit: BoxFit.cover,
@@ -715,7 +716,7 @@ class _PropertyListState extends State<PropertyList> {
               borderRadius: BorderRadius.circular(8),
               child: property.propertyMainPhotoUrl.isNotEmpty
                   ? Image.network(
-                "http://localhost:8080/${property.propertyMainPhotoUrl}", // todo 정적 파일이 제공되는 API 주소 변경
+                "${AppConfig.fileBaseUrl}/${property.propertyMainPhotoUrl}", // todo 정적 파일이 제공되는 API 주소 변경
                 width: 360,
                 height: 240,
                 fit: BoxFit.cover,
