@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 
-import '../constants/app_config.dart';
+import '../config/app_config.dart';
 
 class ApiUtils {
   static final ApiUtils _instance = ApiUtils._internal();

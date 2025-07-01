@@ -7,7 +7,7 @@ import 'package:property_service_web_ver2/widgets/common/sub_layout.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_config.dart';
+import '../../core/config/app_config.dart';
 import '../../core/utils/dialog_utils.dart';
 import '../../core/utils/foramt_utils.dart';
 import '../../core/utils/toast_manager.dart';
