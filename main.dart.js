@@ -114752,7 +114752,7 @@ s($,"beb","a85",()=>new A.aui(A.cr("[/\\\\]",!0,!1),A.cr("[^/\\\\]$",!0,!1),A.cr
 s($,"bea","Li",()=>new A.atZ(A.cr("/",!0,!1),A.cr("(^[a-zA-Z][-+.a-zA-Z\\d]*://|[^/])$",!0,!1),A.cr("[a-zA-Z][-+.a-zA-Z\\d]*://[^/]*",!0,!1),A.cr("^/",!0,!1)))
 s($,"be8","aOi",()=>A.b4T())
 s($,"bdC","a84",()=>A.aQs())
-s($,"bbM","ud",()=>{var q,p,o,n,m="application/json",l=new A.a8D(),k=A.b_2("http://localhost:8080/api",B.pD,A.av(["Content-Type",m,"Accept",m],t.N,t.z),B.pD),j=new A.acj(A.aVC(),new A.Qx(A.a([B.KE],A.aQ("C<fr?>"))),A.aVC(),new A.ag1(51200),!1)
+s($,"bbM","ud",()=>{var q,p,o,n,m="application/json",l=new A.a8D(),k=A.b_2("https://api.xn--h50bw7n3vhqjd47vujaqg.site/api",B.pD,A.av(["Content-Type",m,"Accept",m],t.N,t.z),B.pD),j=new A.acj(A.aVC(),new A.Qx(A.a([B.KE],A.aQ("C<fr?>"))),A.aVC(),new A.ag1(51200),!1)
 j.tI$=k
 j.Zz$=new A.a9e(A.aR(t.lZ))
 l.a=j
