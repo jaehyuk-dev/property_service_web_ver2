@@ -1187,9 +1187,9 @@ class _PropertyRegisterState extends State<PropertyRegister> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: building.buildingMainPhotoUrl.isNotEmpty
+              child: (building.buildingMainPhotoUrl != null && building.buildingMainPhotoUrl!.isNotEmpty)
                   ? Image.network(
-                "http://localhost:8080/${building.buildingMainPhotoUrl}", // todo 정적 파일이 제공되는 API 주소 변경
+                "http://localhost:8080/${building.buildingMainPhotoUrl}", 
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
