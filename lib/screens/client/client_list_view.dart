@@ -626,6 +626,29 @@ class _ClientListState extends State<ClientList> {
     }
   }
 
+  // 전화번호 포맷팅 함수
+  String formatPhoneNumber(String phoneNumber) {
+    // 숫자만 추출
+    String numbersOnly = phoneNumber.replaceAll(RegExp(r'[^0-9]'), '');
+
+    // 11자리 휴대폰 번호인 경우 (010-xxxx-xxxx)
+    if (numbersOnly.length == 11) {
+      return '${numbersOnly.substring(0, 3)}-${numbersOnly.substring(3, 7)}-${numbersOnly.substring(7)}';
+    }
+    // 10자리 지역번호 포함 번호인 경우 (02-xxxx-xxxx 등)
+    else if (numbersOnly.length == 10) {
+      return '${numbersOnly.substring(0, 2)}-${numbersOnly.substring(2, 6)}-${numbersOnly.substring(6)}';
+    }
+    // 9자리 지역번호 포함 번호인 경우 (02-xxx-xxxx)
+    else if (numbersOnly.length == 9) {
+      return '${numbersOnly.substring(0, 2)}-${numbersOnly.substring(2, 5)}-${numbersOnly.substring(5)}';
+    }
+    // 그 외의 경우는 원본 반환
+    else {
+      return phoneNumber;
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -759,7 +782,7 @@ class _ClientListState extends State<ClientList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(width:140, child: _buildBasicInfo("성함", clientDetail == null ? "" : "${clientDetail!.clientName} (${clientDetail!.clientGender.substring(0, 1)})")),
-                            SizedBox(width:200, child: _buildBasicInfo("전화번호", clientDetail == null ? "" : clientDetail!.clientPhoneNumber)),
+                            SizedBox(width:200, child: _buildBasicInfo("전화번호", clientDetail == null ? "" :formatPhoneNumber(clientDetail!.clientPhoneNumber))),
                             SizedBox(width:160, child: _buildBasicInfo("담당자", clientDetail == null ? "" : clientDetail!.clientPicUser)),
                             SizedBox(width:100,
                               child: Column(
@@ -956,7 +979,7 @@ class _ClientListState extends State<ClientList> {
             ),
             SizedBox(height: 8),
             Text(
-              client.clientPhoneNumber,
+              formatPhoneNumber(client.clientPhoneNumber), // ✅ 함수 적용
               style: TextStyle(
                 fontSize: 14,
                 color: Color(0xFF6B7280),
