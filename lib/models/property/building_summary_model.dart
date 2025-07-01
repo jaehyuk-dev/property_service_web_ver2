@@ -4,14 +4,14 @@ class BuildingSummaryModel {
   final String buildingAddress;
   final String buildingType;
 
-  final String buildingMainPhotoUrl;
+  final String? buildingMainPhotoUrl;
 
   BuildingSummaryModel({
     required this.buildingId,
     required this.buildingName,
     required this.buildingAddress,
     required this.buildingType,
-    required this.buildingMainPhotoUrl,
+    this.buildingMainPhotoUrl,
   });
 
   factory BuildingSummaryModel.fromJson(Map<String, dynamic> json) {
