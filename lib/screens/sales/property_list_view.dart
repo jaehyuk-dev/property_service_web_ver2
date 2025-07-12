@@ -535,7 +535,7 @@ class _PropertyListState extends State<PropertyList> {
                       Row(
                         children: [
                           SizedBox(width: 220, child: _buildBasicInfo2("사용 승인 일", propertyDetail == null ? "" : "${propertyDetail!.approvalDate}", icon: Icons.calendar_month)),
-                          SizedBox(width: 220, child: _buildBasicInfo2("입주 가능 일", propertyDetail == null ? "" : "${propertyDetail!.availableMoveInDate}", icon: Icons.event_available)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("입주 가능 일", propertyDetail == null ? "" : (propertyDetail!.availableMoveInDate.isEmpty ? "설정되지 않음" : "${propertyDetail!.availableMoveInDate}"), icon: Icons.event_available)),
                           SizedBox(width: 220, child: _buildBasicInfo2("입실 일", propertyDetail == null ? "" : "${propertyDetail!.moveInDate}", icon: Icons.login_outlined)),
                           SizedBox(width: 220, child: _buildBasicInfo2("퇴실 일", propertyDetail == null ? "" : "${propertyDetail!.moveOutDate}", icon: Icons.logout_outlined)),
                         ],
@@ -550,7 +550,15 @@ class _PropertyListState extends State<PropertyList> {
                       SizedBox(height: 24),
                       Row(
                         children: [
-                          SizedBox(width: 220, child: _buildBasicInfo2("관리비", propertyDetail == null ? "" : "${propertyDetail!.maintenancePrice}", icon: Icons.receipt_long)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("담당자", propertyDetail == null ? "" : "${propertyDetail!.picUser}", icon: Icons.person_pin_rounded)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("매물 상태", propertyDetail == null ? "" : "${propertyDetail!.propertyStatus}", icon: Icons.home_work_outlined)),
+                          SizedBox(width: 220, child: _buildBasicInfo2("난방 종류", propertyDetail == null ? "" : "${propertyDetail!.heatingType}", icon: Icons.thermostat)),
+                        ],
+                      ),
+                      SizedBox(height: 24),
+                      Row(
+                        children: [
+                          SizedBox(width: 220, child: _buildBasicInfo2("관리비", propertyDetail == null ? "" : "${FormatUtils.formatCurrency(propertyDetail!.maintenancePrice)}", icon: Icons.receipt_long)),
                           SizedBox(width: 420, child: _buildBasicInfo2("관리비 항목", propertyDetail == null ? "" : "${propertyDetail!.maintenaceItemList.join(", ")}", icon: Icons.list)),
                         ],
                       ),

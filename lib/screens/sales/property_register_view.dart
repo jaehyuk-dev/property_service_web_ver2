@@ -225,33 +225,73 @@ class _PropertyRegisterState extends State<PropertyRegister> {
   Future<void> _registerProperty() async {
     if(selectedBuildingId == null){
       DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "등록할 매물이 속한 건물을 먼저 선택해 주세요");
+      return;
+    }
+
+    // 날짜 필드 검증
+    if(propertyStatus == "공실" && availableMoveInDate == null){
+      DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "매물 상태가 '공실'인 경우 입주 가능일을 선택해 주세요");
+      return;
+    }
+    
+    if(propertyStatus != null && propertyStatus != "공실"){
+      if(moveInDate == null){
+        DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "매물 상태가 '계약 중' 또는 '거주 중'인 경우 입실 일을 선택해 주세요");
+        return;
+      }
+      if(moveOutDate == null){
+        DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "매물 상태가 '계약 중' 또는 '거주 중'인 경우 퇴실 일을 선택해 주세요");
+        return;
+      }
+    }
+
+    // 필수 필드 검증
+    if(propertyType == null || propertyType!.isEmpty){
+      DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "매물 형태를 선택해 주세요");
+      return;
+    }
+    
+    if(ownerName.text.isEmpty){
+      DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "임대인 이름을 입력해 주세요");
+      return;
+    }
+    
+    if(ownerPhoneNumber.text.isEmpty){
+      DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "임대인 전화번호를 입력해 주세요");
+      return;
+    }
+    
+    if(roomNumber.text.isEmpty){
+      DialogUtils.showAlertDialog(context: context, title: "매물 등록 경고", content: "호수를 입력해 주세요");
+      return;
     }
 
     loadingState.setLoading(true);
     FileUploadModel? fileUploadResponse;
 
-    // 1. 이미지 업로드
+    // 1. 이미지 업로드 (선택사항)
+    List<String> photoUrls = []; // 빈 리스트로 초기화
+    
     try {
-      if (propertyImageList.imageFileModelList.isEmpty) {
-        ToastManager().showToast(context, "이미지를 선택해주세요.");
-        return;
+      if (propertyImageList.imageFileModelList.isNotEmpty) {
+        fileUploadResponse = await _propertyService.uploadPropertyImages(propertyImageList.imageFileModelList);
+
+        if (fileUploadResponse != null && fileUploadResponse.fileUrls.isNotEmpty) {
+          photoUrls = fileUploadResponse.fileUrls;
+          print("✅ 업로드된 파일 URL 리스트: ${fileUploadResponse.fileUrls}");
+        } else {
+          ToastManager().showToast(context, "매물 이미지 업로드 실패");
+          return;
+        }
       }
-
-      fileUploadResponse = await _propertyService.uploadPropertyImages(propertyImageList.imageFileModelList);
-
-      if (fileUploadResponse == null || fileUploadResponse.fileUrls.isEmpty) {
-        ToastManager().showToast(context, "매물 이미지 업로드 실패");
-        return;
-      }
-
-      print("✅ 업로드된 파일 URL 리스트: ${fileUploadResponse.fileUrls}");
+      // 이미지가 없는 경우는 그냥 빈 리스트로 진행
 
     } catch (e) {
       print("🚨 이미지 업로드 실패: $e");
       await DialogUtils.showAlertDialog(
           context: context,
-          title: "건물 등록 실패",
-          content: "건물 이미지 등록에 실패했습니다."
+          title: "매물 등록 실패",
+          content: "매물 이미지 등록에 실패했습니다."
       );
       return;
     }
@@ -369,20 +409,20 @@ class _PropertyRegisterState extends State<PropertyRegister> {
         heatingTypeCode: _getHeatingTypeCode(heatingType),
         remark: remark.text,
         propertyMainPhotoIndex: propertyImageList.representativeImageIndex ?? 0,
-        photoList: fileUploadResponse.fileUrls,
+        photoList: photoUrls,
       );
 
       await _propertyService.registerProperty(registerModel);
 
       _clearAllForm();
 
-      ToastManager().showToast(context, "건물이 등록 되었습니다.");
+      ToastManager().showToast(context, "매물이 등록 되었습니다.");
     } catch (e) {
-      print("🚨 건물 등록 실패: $e");
+      print("🚨 매물 등록 실패: $e");
       await DialogUtils.showAlertDialog(
           context: context,
-          title: "건물 등록 실패",
-          content: "건물 정보 등록에 실패했습니다."
+          title: "매물 등록 실패",
+          content: "매물 정보 등록에 실패했습니다."
       );
     } finally {
       loadingState.setLoading(false);
@@ -1034,10 +1074,10 @@ class _PropertyRegisterState extends State<PropertyRegister> {
                                   CustomDatePicker(
                                     datePickerType: DatePickerType.date,
                                     label: "",
-                                    selectedDateTime: moveOutDate,
+                                    selectedDateTime: moveInDate,
                                     onChanged:  (DateTime? newDate) {
                                       setState(() {
-                                        moveOutDate = newDate;
+                                        moveInDate = newDate;
                                       });
                                     },
                                   )

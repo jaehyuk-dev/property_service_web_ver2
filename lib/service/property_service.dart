@@ -13,6 +13,8 @@ import 'package:property_service_web_ver2/models/property/property_summary_model
 import '../core/utils/api_utils.dart';
 import '../models/common/image_file_model.dart';
 import '../models/common/search_condition.dart';
+import '../models/revenue/revenue_info_model.dart';
+import '../models/revenue/revenue_search_condition.dart';
 
 class PropertyService{
   final ApiUtils _api = ApiUtils();
@@ -245,6 +247,38 @@ class PropertyService{
     } catch (e) {
       print("🚨 API 호출 중 오류 발생: $e");
       return;
+    }
+  }
+
+  // 매출 목록 조회 API
+  Future<RevenueInfoModel?> searchRevenueList(RevenueSearchCondition condition) async {
+    try {
+      final response = await _api.get("/revenue/list", params: condition.toJson());
+
+      if (response.statusCode == 200) {
+        return RevenueInfoModel.fromJson(response.data['data']);
+      } else {
+        throw Exception("❌ 매출 목록 조회 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return null;
+    }
+  }
+
+  // 매출 삭제 API
+  Future<bool> deleteRevenue(int revenueId) async {
+    try {
+      final response = await _api.delete("/revenue/$revenueId");
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception("❌ 매출 삭제 실패 (Status Code: ${response.statusCode})");
+      }
+    } catch (e) {
+      print("🚨 API 호출 중 오류 발생: $e");
+      return false;
     }
   }
 }

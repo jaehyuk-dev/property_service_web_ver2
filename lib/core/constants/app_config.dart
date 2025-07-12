@@ -1,3 +1,4 @@
+// core/config/app_config.dart
 import 'package:flutter/foundation.dart';
 
 class AppConfig {
@@ -14,7 +15,7 @@ class AppConfig {
   // 이미지/파일 Base URL
   static String get fileBaseUrl {
     return isDevelopment
-        ? 'http://localhost:8080'  // ✅ /static 제거 - 백엔드에서 직접 /building/, /property/ 경로 제공
+        ? 'http://localhost:8080/static'
         : 'https://api.xn--h50bw7n3vhqjd47vujaqg.site';
   }
 }
