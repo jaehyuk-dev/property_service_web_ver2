@@ -8,15 +8,14 @@ class AppConfig {
   // API Base URL
   static String get apiBaseUrl {
     return isDevelopment
-        ? 'https://api.reatypartners.store/api'
-        : 'http://localhost:8080/api';
-
+        ? 'http://localhost:8080/api'
+        : 'https://api.reatypartners.store/api';
   }
 
   // 이미지/파일 Base URL
   static String get fileBaseUrl {
     return isDevelopment
-        ? 'https://api.reatypartners.store/'
-        : 'http://localhost:8080/';
+        ? 'http://localhost:8080/'
+        : 'https://api.reatypartners.store/';
   }
 }
